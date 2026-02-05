@@ -1,7 +1,11 @@
 {
   description = "A collection of Nix flake templates for various programming languages";
 
-  outputs = { self }: {
+  inputs = {
+    common.url = "path:./common";
+  };
+
+  outputs = { self, common }: {
     templates = {
       go = {
         path = ./go;

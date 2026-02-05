@@ -3,12 +3,12 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    common.url = "github:JonasHinterdorfer/flake-templates?dir=common";
   };
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, common }:
     let
-      common = import ../common.nix;
-      forAllSystems = common.forAllSystems nixpkgs;
+      forAllSystems = common.lib.forAllSystems nixpkgs;
     in
     {
       packages = forAllSystems (system:
@@ -45,7 +45,7 @@
               echo "PHP version: $(php --version | head -n 1)"
               echo "Composer version: $(composer --version)"
               
-              ${common.interactiveDirenvPrompt}
+              ${common.lib.interactiveDirenvPrompt}
             '';
           };
         });
