@@ -1,0 +1,32 @@
+# Composer
+vendor/
+composer.lock
+composer.phar
+
+# Laravel
+.env
+.env.backup
+storage/
+bootstrap/cache/
+
+# Symfony
+var/cache/
+var/log/
+var/sessions/
+
+# WordPress
+wp-config.php
+wp-content/uploads/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

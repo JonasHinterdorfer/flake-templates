@@ -1,0 +1,25 @@
+# Compiled class files
+*.class
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+
+# Gradle
+.gradle/
+build/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# IDEs
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
