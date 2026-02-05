@@ -22,8 +22,8 @@
             src = ./.;
             projectFile = "myapp.csproj"; # Adjust to your project file
             nugetDeps = ./deps.nix; # Generate with: nuget-to-nix
-            dotnet-sdk = pkgs.dotnet-sdk_9;
-            dotnet-runtime = pkgs.dotnet-runtime_9;
+            dotnet-sdk = pkgs.dotnet-sdk_10;
+            dotnet-runtime = pkgs.dotnet-runtime_10;
           };
         });
 
@@ -34,7 +34,7 @@
         {
           default = pkgs.mkShell {
             packages = with pkgs; [
-              dotnet-sdk_9  # Note: Using .NET 9 SDK as .NET 10 may not be available in nixpkgs yet
+              dotnet-sdk_10  # Note: Using .NET 9 SDK as .NET 10 may not be available in nixpkgs yet
               omnisharp-roslyn
             ];
 
