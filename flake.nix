@@ -6,6 +6,9 @@
   };
 
   outputs = { self, common }: {
+    # Export common library for use by templates
+    lib = common.lib;
+    
     templates = {
       go = {
         path = ./go;
