@@ -70,7 +70,7 @@
 
       dotnet10 = {
         path = ./dotnet10;
-        description = ".NET 10 development environment";
+        description = ".NET development environment (latest available SDK)";
         welcomeText = ''
           # Setup Complete!
           

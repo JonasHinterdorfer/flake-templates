@@ -1,5 +1,5 @@
 {
-  description = ".NET 10 development environment";
+  description = ".NET development environment (latest available SDK)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -7,7 +7,7 @@
 
   outputs = { self, nixpkgs }:
     let
-      common = import ./common.nix;
+      common = import ../common.nix;
       forAllSystems = common.forAllSystems nixpkgs;
     in
     {
@@ -34,13 +34,14 @@
         {
           default = pkgs.mkShell {
             packages = with pkgs; [
-              dotnet-sdk_9  # Using .NET 9 as .NET 10 might not be available yet
+              dotnet-sdk_9  # Note: Using .NET 9 SDK as .NET 10 may not be available in nixpkgs yet
               omnisharp-roslyn
             ];
 
             shellHook = ''
-              echo ".NET 10 development environment loaded"
+              echo ".NET development environment loaded"
               echo ".NET version: $(dotnet --version)"
+              echo "Note: This template uses the latest available .NET SDK from nixpkgs"
               
               ${common.interactiveDirenvPrompt}
             '';

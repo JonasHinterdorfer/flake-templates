@@ -12,7 +12,7 @@ This repository provides ready-to-use Nix flake templates for the following lang
 - **node-angular** - Node.js with Angular CLI and TypeScript support
 - **java** - Java development with JDK, Maven, and Gradle
 - **kotlin** - Kotlin development environment with compiler and language server
-- **dotnet10** - .NET 10 development environment
+- **dotnet10** - .NET development environment (latest available SDK from nixpkgs)
 - **dotnet9** - .NET 9 development environment
 - **dotnet8** - .NET 8 development environment
 - **c** - C development with gcc, cmake, clang, and gdb

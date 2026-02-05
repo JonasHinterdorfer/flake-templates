@@ -7,7 +7,7 @@
 
   outputs = { self, nixpkgs }:
     let
-      common = import ./common.nix;
+      common = import ../common.nix;
       forAllSystems = common.forAllSystems nixpkgs;
     in
     {
