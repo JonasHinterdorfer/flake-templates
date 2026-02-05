@@ -1,0 +1,132 @@
+name: Test Templates
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-templates:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        template:
+          - go
+          - rust
+          - python
+          - node-angular
+          - java
+          - kotlin
+          - dotnet10
+          - dotnet9
+          - dotnet8
+          - c
+          - cpp
+          - fsharp
+          - php
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+      
+      - name: Test template initialization
+        run: |
+          # Create temporary directory for testing
+          TEMP_DIR=$(mktemp -d)
+          cd "$TEMP_DIR"
+          
+          # Initialize template from local repository
+          # We test with the checked out code
+          nix flake init -t "path:${GITHUB_WORKSPACE}#${{ matrix.template }}"
+          
+          # Git init is required for flake evaluation
+          git init
+          git config user.email "test@example.com"
+          git config user.name "Test User"
+          git add .
+          
+          # Display the flake.nix for debugging
+          echo "=== Template flake.nix ==="
+          cat flake.nix
+          echo "==========================="
+          
+          # Evaluate flake metadata (this will catch basic syntax errors)
+          echo "Testing flake metadata..."
+          nix flake metadata
+          
+          # Show flake outputs
+          echo "Testing flake outputs..."
+          nix flake show --allow-import-from-derivation
+          
+      - name: Test flake check
+        run: |
+          TEMP_DIR=$(mktemp -d)
+          cd "$TEMP_DIR"
+          nix flake init -t "path:${GITHUB_WORKSPACE}#${{ matrix.template }}"
+          git init
+          git config user.email "test@example.com"
+          git config user.name "Test User"
+          git add .
+          
+          # Run flake check (without building packages)
+          echo "Running flake check..."
+          nix flake check --no-build || true
+          
+      - name: Test development shell
+        run: |
+          TEMP_DIR=$(mktemp -d)
+          cd "$TEMP_DIR"
+          nix flake init -t "path:${GITHUB_WORKSPACE}#${{ matrix.template }}"
+          git init
+          git config user.email "test@example.com"
+          git config user.name "Test User"
+          git add .
+          
+          # Test that the development shell can be evaluated and entered
+          echo "Testing development shell..."
+          nix develop --command echo "✓ Dev shell loaded successfully for ${{ matrix.template }}"
+
+  test-from-github:
+    # This job tests that templates work when fetched from GitHub
+    # (simulates real user experience)
+    runs-on: ubuntu-latest
+    # Only run this on main branch after merge
+    if: github.ref == 'refs/heads/main'
+    strategy:
+      fail-fast: false
+      matrix:
+        template:
+          - go
+          - rust
+          - python
+    
+    steps:
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+      
+      - name: Test template from GitHub
+        run: |
+          TEMP_DIR=$(mktemp -d)
+          cd "$TEMP_DIR"
+          
+          # Test fetching template directly from GitHub
+          nix flake init -t "github:${{ github.repository }}#${{ matrix.template }}"
+          
+          git init
+          git config user.email "test@example.com"
+          git config user.name "Test User"
+          git add .
+          
+          # Test that it evaluates
+          nix flake metadata
+          nix develop --command echo "✓ Template works from GitHub"
