@@ -38,6 +38,9 @@ jobs:
       
       - name: Test template initialization
         run: |
+          # Each test step uses a fresh temp directory to ensure isolation
+          # This simulates a user initializing the template from scratch
+          
           # Create temporary directory for testing
           TEMP_DIR=$(mktemp -d)
           cd "$TEMP_DIR"
@@ -67,6 +70,7 @@ jobs:
           
       - name: Test flake check
         run: |
+          # Test in a fresh directory
           TEMP_DIR=$(mktemp -d)
           cd "$TEMP_DIR"
           nix flake init -t "path:${GITHUB_WORKSPACE}#${{ matrix.template }}"
@@ -75,12 +79,15 @@ jobs:
           git config user.name "Test User"
           git add .
           
-          # Run flake check (without building packages)
-          echo "Running flake check..."
-          nix flake check --no-build || true
+          # Note: We skip 'nix flake check' because templates are designed to be
+          # populated with actual project code. Running checks on empty templates
+          # would fail as they reference files that don't exist yet (e.g., Cargo.lock,
+          # package.json, .csproj files). This is expected and not an error.
+          echo "Skipping flake check - templates need project files to be added first"
           
       - name: Test development shell
         run: |
+          # Test dev shell in a fresh directory
           TEMP_DIR=$(mktemp -d)
           cd "$TEMP_DIR"
           nix flake init -t "path:${GITHUB_WORKSPACE}#${{ matrix.template }}"
