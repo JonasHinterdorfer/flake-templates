@@ -7,8 +7,8 @@
 
   outputs = { self, nixpkgs }:
     let
-      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
-      forAllSystems = nixpkgs.lib.genAttrs systems;
+      common = import ./common.nix;
+      forAllSystems = common.forAllSystems nixpkgs;
     in
     {
       packages = forAllSystems (system:
@@ -42,6 +42,8 @@
               echo "F# development environment loaded"
               echo ".NET version: $(dotnet --version)"
               echo "F# compiler available via: dotnet fsi"
+              
+              ${common.interactiveDirenvPrompt}
             '';
           };
         });

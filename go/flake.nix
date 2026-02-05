@@ -7,8 +7,8 @@
 
   outputs = { self, nixpkgs }:
     let
-      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
-      forAllSystems = nixpkgs.lib.genAttrs systems;
+      common = import ./common.nix;
+      forAllSystems = common.forAllSystems nixpkgs;
     in
     {
       packages = forAllSystems (system:
@@ -42,6 +42,8 @@
             shellHook = ''
               echo "Go development environment loaded"
               echo "Go version: $(go version)"
+              
+              ${common.interactiveDirenvPrompt}
             '';
           };
         });

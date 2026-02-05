@@ -7,8 +7,8 @@
 
   outputs = { self, nixpkgs }:
     let
-      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
-      forAllSystems = nixpkgs.lib.genAttrs systems;
+      common = import ./common.nix;
+      forAllSystems = common.forAllSystems nixpkgs;
     in
     {
       packages = forAllSystems (system:
@@ -52,6 +52,8 @@
               echo "G++ version: $(g++ --version | head -n 1)"
               echo "Clang++ version: $(clang++ --version | head -n 1)"
               echo "CMake version: $(cmake --version | head -n 1)"
+              
+              ${common.interactiveDirenvPrompt}
             '';
           };
         });

@@ -20,3 +20,4 @@ vendor/
 # Build output
 bin/
 dist/
+.envrc.allowed

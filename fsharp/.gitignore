@@ -29,3 +29,4 @@ packages/
 # OS
 .DS_Store
 Thumbs.db
+.envrc.allowed

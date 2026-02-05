@@ -7,8 +7,8 @@
 
   outputs = { self, nixpkgs }:
     let
-      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
-      forAllSystems = nixpkgs.lib.genAttrs systems;
+      common = import ./common.nix;
+      forAllSystems = common.forAllSystems nixpkgs;
     in
     {
       packages = forAllSystems (system:
@@ -41,6 +41,8 @@
             shellHook = ''
               echo ".NET 8 development environment loaded"
               echo ".NET version: $(dotnet --version)"
+              
+              ${common.interactiveDirenvPrompt}
             '';
           };
         });

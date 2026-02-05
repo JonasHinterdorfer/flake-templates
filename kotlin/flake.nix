@@ -7,8 +7,8 @@
 
   outputs = { self, nixpkgs }:
     let
-      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
-      forAllSystems = nixpkgs.lib.genAttrs systems;
+      common = import ./common.nix;
+      forAllSystems = common.forAllSystems nixpkgs;
     in
     {
       packages = forAllSystems (system:
@@ -46,6 +46,8 @@
             shellHook = ''
               echo "Kotlin development environment loaded"
               echo "Kotlin version: $(kotlin -version 2>&1)"
+              
+              ${common.interactiveDirenvPrompt}
             '';
           };
         });

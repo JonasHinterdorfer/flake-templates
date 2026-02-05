@@ -7,8 +7,8 @@
 
   outputs = { self, nixpkgs }:
     let
-      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
-      forAllSystems = nixpkgs.lib.genAttrs systems;
+      common = import ./common.nix;
+      forAllSystems = common.forAllSystems nixpkgs;
     in
     {
       packages = forAllSystems (system:
@@ -44,6 +44,8 @@
               echo "PHP development environment loaded"
               echo "PHP version: $(php --version | head -n 1)"
               echo "Composer version: $(composer --version)"
+              
+              ${common.interactiveDirenvPrompt}
             '';
           };
         });

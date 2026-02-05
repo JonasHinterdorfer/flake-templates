@@ -54,3 +54,4 @@ obj/
 # IDEs
 .vscode/
 .idea/
+.envrc.allowed

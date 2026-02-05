@@ -8,6 +8,7 @@ This repository provides ready-to-use Nix flake templates for the following lang
 
 - **go** (default) - Go development environment with latest toolchain, gopls, linters, and debugger
 - **rust** - Rust development with cargo, rustc, rust-analyzer, and clippy
+- **python** - Python development with automatic venv creation, pip, pyright, ruff, and black
 - **node-angular** - Node.js with Angular CLI and TypeScript support
 - **java** - Java development with JDK, Maven, and Gradle
 - **kotlin** - Kotlin development environment with compiler and language server
@@ -103,6 +104,7 @@ Each template includes a basic build configuration. You'll need to adjust the fo
 
 - **Go**: Update `vendorHash` after running `go mod vendor`
 - **Rust**: Ensure `Cargo.lock` exists in your project
+- **Python**: The venv is automatically created in `.venv/` and activated. Install dependencies with `pip install -r requirements.txt`
 - **Node/Angular**: Set correct `npmDepsHash` after first build
 - **.NET**: Adjust `projectFile` to match your .csproj/.fsproj file and run `nuget-to-nix` to generate `deps.nix`
 - **Java/Kotlin**: Adjust build commands and output paths
@@ -131,6 +133,17 @@ nix flake init -t github:JonasHinterdorfer/flake-templates#rust
 direnv allow
 cargo init
 nix develop
+```
+
+### Create a new Python project with venv
+
+```bash
+mkdir my-python-project
+cd my-python-project
+nix flake init -t github:JonasHinterdorfer/flake-templates#python
+direnv allow
+# The venv will be automatically created and activated
+pip install requests  # Example: install a package
 ```
 
 ### Create a new Java project

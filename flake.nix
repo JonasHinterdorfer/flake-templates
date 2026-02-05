@@ -158,6 +158,19 @@
           Would you like to run this now? (This will activate the development environment)
         '';
       };
+
+      python = {
+        path = ./python;
+        description = "Python development environment with automatic venv creation";
+        welcomeText = ''
+          # Setup Complete!
+          
+          To enable automatic environment loading, run:
+            direnv allow
+          
+          Would you like to run this now? (This will activate the development environment)
+        '';
+      };
     };
 
     defaultTemplate = self.templates.go;

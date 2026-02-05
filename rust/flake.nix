@@ -7,8 +7,8 @@
 
   outputs = { self, nixpkgs }:
     let
-      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
-      forAllSystems = nixpkgs.lib.genAttrs systems;
+      common = import ./common.nix;
+      forAllSystems = common.forAllSystems nixpkgs;
     in
     {
       packages = forAllSystems (system:
@@ -44,6 +44,8 @@
               echo "Rust development environment loaded"
               echo "Rust version: $(rustc --version)"
               echo "Cargo version: $(cargo --version)"
+              
+              ${common.interactiveDirenvPrompt}
             '';
           };
         });
