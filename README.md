@@ -90,6 +90,18 @@ Each template includes:
 - **.envrc** - direnv configuration for automatic environment loading
 - **.gitignore** - Language-specific gitignore patterns
 
+### Common Library
+
+All templates use a shared common library located in the `common/` directory. This library provides:
+
+- `lib.systems` - List of supported system architectures
+- `lib.forAllSystems` - Helper function to generate attributes for all systems
+- `lib.interactiveDirenvPrompt` - Interactive prompt for enabling direnv (with proper stdin handling)
+
+The common library is referenced as a flake input in each template. For more details, see [common/README.md](common/README.md).
+
+**Note:** The interactive direnv prompt uses `/dev/tty` for input, which allows it to work properly even in shell hooks where stdin is not attached. This fixes the issue where pressing "y" wouldn't be detected in the original implementation.
+
 ## Customization
 
 After initializing a template, you can customize the `flake.nix` file to:

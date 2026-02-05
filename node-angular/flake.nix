@@ -3,12 +3,12 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    common.url = "github:JonasHinterdorfer/flake-templates?dir=common";
   };
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, common }:
     let
-      common = import ../common.nix;
-      forAllSystems = common.forAllSystems nixpkgs;
+      forAllSystems = common.lib.forAllSystems nixpkgs;
     in
     {
       packages = forAllSystems (system:
@@ -49,7 +49,7 @@
               echo "npm version: $(npm --version)"
               echo "Angular CLI version: $(ng version --minimal 2>/dev/null || echo 'Angular CLI installed')"
               
-              ${common.interactiveDirenvPrompt}
+              ${common.lib.interactiveDirenvPrompt}
             '';
           };
         });
