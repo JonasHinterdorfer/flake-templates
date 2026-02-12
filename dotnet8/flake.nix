@@ -36,6 +36,7 @@
             packages = with pkgs; [
               dotnet-sdk_8
               omnisharp-roslyn
+              dotnet-ef
             ];
 
             shellHook = ''
